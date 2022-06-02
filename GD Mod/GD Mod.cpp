@@ -60,14 +60,14 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 		
 		case WM_CREATE:
-			SetTimer(hWnd, 1, 16, NULL);
+			SetTimer(hWnd, 1, 20, NULL);
 
 			addBTN(hWnd);
 			drawTitleBar(hWnd);
 			break;
 
 		case WM_TIMER:
-			InvalidateRect(hWnd, NULL, FALSE);
+			InvalidateRect(hWnd, NULL, TRUE);
 			break;
 
 		case WM_PAINT:
@@ -130,6 +130,7 @@ void Update(HWND hWnd, HDC hdc)
 	
 
 	brush = CreateSolidBrush(RGB(9, 9, 9));
+
 	FillRect(hdc, &rect, brush);
 
 	rect.bottom = rect.top + 26;
@@ -170,23 +171,44 @@ void Update(HWND hWnd, HDC hdc)
 
 	drawIcon(hWnd, hdc);
 
+	GetWindowRect(hWnd, &rect);
 
-	if (GetKeyState(1) == 1)
+	rect.left = 0;
+	rect.top = 26;
+	rect.bottom = rect.top + 22;
+	
+	brush = CreateSolidBrush(RGB(15, 15, 15));
+	FillRect(hdc, &rect, brush);
+
+	GetWindowRect(hWnd, &rect);
+	
+	SetBkColor(hdc, RGB(15, 15, 15));
+
+	TextOut(hdc, 12, 29, L"File", 4);
+
+	if (currentSceneName == "MainLayer")
 	{
-		//onMouseDown(hWnd);
+		rect.left = 0;
+		rect.right = rect.left + 50;
+		rect.top = 26 + 22;
+
+		brush = CreateSolidBrush(RGB(15, 15, 15));
+		FillRect(hdc, &rect, brush);
+
+		
 	}
 }
 
 
 void addBTN(HWND hWnd)
 {
-	CreateWindowW(L"static", L"test.gdmm", WS_VISIBLE | WS_CHILD, 400, 200, 100, 50, hWnd,
-		(HMENU)ID_CLOSE, NULL, NULL);
+	//CreateWindowW(L"static", L"test.gdmm", WS_VISIBLE | WS_CHILD, 400, 200, 100, 50, hWnd,
+		//(HMENU)ID_CLOSE, NULL, NULL);
 }
 
 void drawTitleBar(HWND hWnd)
 {
-	auto closeButton = CreateWindowW(L"button", L"", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, 100, 100, 100, 100, hWnd, (HMENU)ID_CLOSE, NULL, NULL);
+	//auto closeButton = CreateWindowW(L"button", L"", WS_CHILD | WS_VISIBLE | BS_OWNERDRAW, 100, 100, 100, 100, hWnd, (HMENU)ID_CLOSE, NULL, NULL);
 }
 
 void drawIcon(HWND hWnd, HDC hdc)
